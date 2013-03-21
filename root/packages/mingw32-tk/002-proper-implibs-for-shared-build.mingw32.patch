@@ -1,0 +1,27 @@
+diff -ur tk8.5.9.orig/win/configure.in tk8.5.9/win/configure.in
+--- tk8.5.9.orig/win/configure.in	2010-09-02 22:12:14 +0400
++++ tk8.5.9/win/configure.in	2011-03-25 00:39:20 +0300
+@@ -190,7 +190,11 @@
+ eval "TK_SRC_DIR=\"`cd $srcdir/..; pwd`\""
+ 
+ eval "TK_DLL_FILE=tk$VER${DLLSUFFIX}"
++if test ${SHARED_BUILD} = 0 ; then
+ eval "TK_LIB_FILE=${LIBPREFIX}tk$VER${LIBSUFFIX}"
++else
++eval "TK_LIB_FILE=${LIBPREFIX}tk$VER${DLLSUFFIX}${LIBSUFFIX}"
++fi
+ 
+ eval "TK_STUB_LIB_FILE=${LIBPREFIX}tkstub${VER}${LIBSUFFIX}"
+ # FIXME: All of this var junk needs to be done in tcl.m4 !!!!
+diff -ur --exclude mingwPORT tk8.5.9.orig/win/tcl.m4 tk8.5.9/win/tcl.m4
+--- tk8.5.9.orig/win/tcl.m4	2010-09-08 21:40:49 +0400
++++ tk8.5.9/win/tcl.m4	2011-03-24 16:32:23 +0300
+@@ -498,7 +483,7 @@
+ 	    SHLIB_LD_LIBS='${LIBS}'
+ 	    # Add SHLIB_LD_LIBS to the Make rule, not here.
+ 	    MAKE_DLL="\${SHLIB_LD} \$(LDFLAGS) -o \[$]@ ${extra_ldflags} \
+-	        -Wl,--out-implib,\$(patsubst %.dll,lib%.a,\[$]@)"
++	        -Wl,--out-implib,\$(patsubst %.dll,lib%.dll.a,\[$]@)"
+ 
+ 	    LIBSUFFIX="\${DBGX}.a"
+ 	    LIBFLAGSUFFIX="\${DBGX}"
