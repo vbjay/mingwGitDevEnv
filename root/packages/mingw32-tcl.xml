@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<software-distribution project="mingwGitDevEnv" home="https://github.com/sschuberth/mingwGitDevEnv" issue="2011111400">
+<software-distribution project="mingwGitDevEnv" home="https://github.com/sschuberth/mingwGitDevEnv" issue="2013032100">
   <package-collection subsystem="mingw32">
     <download-host uri="https://dl.dropbox.com/u/6413030/mingwGitDevEnv/packages/mingw32-tcl/%F" />
 
     <package name="mingw32-tcl">
       <affiliate group="MinGW Developer Toolkit" />
-      <description lang="en" title="tcl: Tool Command Language" >
+      <description lang="en" title="Tcl: Tool Command Language" >
         <paragraph>Tcl provides a powerful platform for creating integration applications that
           tie together diverse applications, protocols, devices, and frameworks.
           When paired with the Tk toolkit, Tcl provides the fastest and most powerful
@@ -15,16 +15,18 @@
         </paragraph>
       </description>
 
+      <source tarname="tcl-%-mingw32-src.tar.%" />
+
       <component class="bin">
-        <release tarname="tcl-8.5.11-1-mingw32-bin.tar.lzma" />
+        <release tarname="tcl-8.5.12-1-mingw32-bin.tar.lzma" />
       </component>
 
       <component class="dev">
-        <release tarname="tcl-8.5.11-1-mingw32-dev.tar.lzma" />
+        <release tarname="tcl-8.5.12-1-mingw32-dev.tar.lzma" />
       </component>
 
       <component class="doc">
-        <release tarname="tcl-8.5.11-1-mingw32-doc.tar.lzma" />
+        <release tarname="tcl-8.5.12-1-mingw32-doc.tar.lzma" />
       </component>
    </package>
 

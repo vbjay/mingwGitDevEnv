@@ -1,7 +1,7 @@
 slotdir=${PV_MAJ_MIN}
 slotbin=${PV_MAJ_MIN/./}
 
-DESCRIPTION="Tcl language interpreter"
+DESCRIPTION="Tcl programming language"
 HOMEPAGE="http://tcl.tk/"
 SRC_URI="mirror://sourceforge/tcl/${PN}${PV}-src.tar.gz"
 
@@ -15,8 +15,12 @@ PKG_CONTENTS[0]="bin lib --exclude=lib/*.a --exclude=lib/*.sh"
 PKG_CONTENTS[1]="include lib/*.a lib/*.sh lib/${PN}${slotdir}/*.sh"
 PKG_CONTENTS[2]="share/doc"
 
+PATCH_URI="001-proper-implibs-for-shared-build.mingw32.patch
+           002-fix-forbidden-colon-in-paths.mingw32.patch
+           003-install-man.mingw32.patch"
+
 src_compile() {
-    mkdir -p ${B}/win
+    lndirs
     cd ${B}/win
     mgwconf --enable-man-symlinks
     mgwmake -j1

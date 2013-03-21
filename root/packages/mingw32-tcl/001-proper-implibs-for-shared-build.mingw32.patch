@@ -1,0 +1,63 @@
+diff -ur tcl8.5.9.orig/win/Makefile.in tcl8.5.9/win/Makefile.in
+--- tcl8.5.9.orig/win/Makefile.in	2010-09-08 21:40:49 +0400
++++ tcl8.5.9/win/Makefile.in	2011-03-24 19:04:31 +0300
+@@ -131,8 +138,10 @@
+ TCL_DLL_FILE		= @TCL_DLL_FILE@
+ TCL_LIB_FILE		= @TCL_LIB_FILE@
+ DDE_DLL_FILE		= tcldde$(DDEVER)${DLLSUFFIX}
++DDE_IMPLIB_FILE		= libtcldde$(DDEDOTVER)${DLLSUFFIX}${LIBSUFFIX}
+ DDE_LIB_FILE		= tcldde$(DDEVER)${LIBSUFFIX}
+ REG_DLL_FILE		= tclreg$(REGVER)${DLLSUFFIX}
++REG_IMPLIB_FILE		= libtclreg$(REGDOTVER)${DLLSUFFIX}${LIBSUFFIX}
+ REG_LIB_FILE		= tclreg$(REGVER)${LIBSUFFIX}
+ PIPE_DLL_FILE		= tclpip$(VER)${DLLSUFFIX}
+ 
+@@ -584,6 +593,10 @@
+ 	    $(COPY) $(DDE_DLL_FILE) $(LIB_INSTALL_DIR)/dde1.3; \
+ 	    $(COPY) $(ROOT_DIR)/library/dde/pkgIndex.tcl \
+ 		$(LIB_INSTALL_DIR)/dde$(DDEDOTVER); \
++		if [ -f $(DDE_IMPLIB_FILE) ]; then \
++		echo installing $(DDE_IMPLIB_FILE); \
++		$(COPY) $(DDE_IMPLIB_FILE) $(LIB_INSTALL_DIR); \
++		fi \
+ 	    fi
+ 	@if [ -f $(DDE_LIB_FILE) ]; then \
+ 	    echo installing $(DDE_LIB_FILE); \
+@@ -594,6 +607,10 @@
+ 	    $(COPY) $(REG_DLL_FILE) $(LIB_INSTALL_DIR)/reg1.2; \
+ 	    $(COPY) $(ROOT_DIR)/library/reg/pkgIndex.tcl \
+ 		$(LIB_INSTALL_DIR)/reg$(REGDOTVER); \
++		if [ -f $(REG_IMPLIB_FILE) ]; then \
++		echo installing $(REG_IMPLIB_FILE); \
++		$(COPY) $(REG_IMPLIB_FILE) $(LIB_INSTALL_DIR); \
++		fi \
+ 	    fi
+ 	@if [ -f $(REG_LIB_FILE) ]; then \
+ 	    echo installing $(REG_LIB_FILE); \
+diff -ur --exclude mingwPORT tcl8.5.9.orig/win/configure.in tcl8.5.9/win/configure.in
+--- tcl8.5.9.orig/win/configure.in	2010-09-08 21:40:49 +0400
++++ tcl8.5.9/win/configure.in	2011-03-24 16:49:18 +0300
+@@ -378,7 +378,11 @@
+ 
+ eval "TCL_DLL_FILE=tcl${VER}${DLLSUFFIX}"
+ 
++if test ${SHARED_BUILD} = 0 ; then
+ eval "TCL_LIB_FILE=${LIBPREFIX}tcl$VER${LIBSUFFIX}"
++else
++eval "TCL_LIB_FILE=${LIBPREFIX}tcl$VER${DLLSUFFIX}${LIBSUFFIX}"
++fi
+ 
+ eval "TCL_LIB_FLAG=\"-ltcl${VER}${LIBFLAGSUFFIX}\""
+ eval "TCL_BUILD_LIB_SPEC=\"-L`pwd` ${TCL_LIB_FLAG}\""
+diff -ur --exclude mingwPORT tcl8.5.9.orig/win/tcl.m4 tcl8.5.9/win/tcl.m4
+--- tcl8.5.9.orig/win/tcl.m4	2010-09-08 21:40:49 +0400
++++ tcl8.5.9/win/tcl.m4	2011-03-24 16:32:23 +0300
+@@ -513,7 +513,7 @@
+ 	    SHLIB_LD_LIBS='${LIBS}'
+ 	    # Add SHLIB_LD_LIBS to the Make rule, not here.
+ 	    MAKE_DLL="\${SHLIB_LD} \$(LDFLAGS) -o \[$]@ ${extra_ldflags} \
+-	        -Wl,--out-implib,\$(patsubst %.dll,lib%.a,\[$]@)"
++	        -Wl,--out-implib,\$(patsubst %.dll,lib%.dll.a,\[$]@)"
+ 
+ 	    LIBSUFFIX="\${DBGX}.a"
+ 	    LIBFLAGSUFFIX="\${DBGX}"
